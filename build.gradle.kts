@@ -30,7 +30,9 @@ dependencies {
     api(libs.structurizr.export.c4plantuml)
     api(libs.architectureicons)
 
-    api("org.springframework.boot:spring-boot-starter-json")
+    // let that be an API dependency in order publish @SpringBootApplication
+    api("org.springframework.boot:spring-boot-autoconfigure")
+    runtimeOnly("org.springframework.boot:spring-boot-starter")
 
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
