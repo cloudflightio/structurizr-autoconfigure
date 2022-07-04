@@ -53,14 +53,14 @@ Last step is to create your main class, it's as easy as that, simply start the S
 ```kotlin
 package io.cloudflight.architecture
 
+import io.cloudflight.architecture.structurizr.SpringStructurizr
 import org.springframework.boot.SpringApplication
-import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
 class Architecture
 
 fun main(args: Array<String>) {
-    SpringApplication.run(Architecture::class.java)
+    SpringStructurizr.run(Architecture::class.java)
 }
 ```
 
