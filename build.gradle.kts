@@ -7,7 +7,7 @@ plugins {
 
 description = "Spring Boot AutoConfigure Support for the Structurizr Client"
 group = "io.cloudflight.structurizr"
-version = "1.0.0"
+version = "1.0.1"
 
 autoConfigure {
     java {

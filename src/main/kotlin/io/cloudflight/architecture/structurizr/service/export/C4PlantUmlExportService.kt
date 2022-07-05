@@ -2,7 +2,7 @@ package io.cloudflight.architecture.structurizr.service.export
 
 import com.structurizr.Workspace
 import com.structurizr.export.Diagram
-import com.structurizr.view.*
+import com.structurizr.view.ThemeUtils
 import io.cloudflight.architecture.structurizr.WorkspaceExportService
 import io.cloudflight.architecture.structurizr.autoconfigure.StructurizrProperties
 import io.cloudflight.structurizr.plantuml.ExtendedC4PlantUmlExporter
@@ -21,14 +21,8 @@ internal class C4PlantUmlExportService(private val properties: StructurizrProper
         ThemeUtils.loadThemes(workspace)
 
         if (properties.export.c4PlantUml.enabled) {
-            workspace.views.views.forEach {
-                when (it) {
-                    is ContainerView -> storeDiagram(c4exporter.export(it))
-                    is DeploymentView -> storeDiagram(c4exporter.export(it))
-                    is SystemContextView -> storeDiagram(c4exporter.export(it))
-                    is ComponentView -> storeDiagram(c4exporter.export(it))
-                    is SystemLandscapeView -> storeDiagram(c4exporter.export(it))
-                }
+            c4exporter.export(workspace).forEach {
+                storeDiagram(it)
             }
         }
     }
