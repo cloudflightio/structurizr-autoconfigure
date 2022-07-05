@@ -135,3 +135,11 @@ class ElementConfiguration {
 }
 
 data class Dependency(val element: Element, val description: String, val technology: String, val interactionStyle: InteractionStyle? = null)
+
+/**
+ * Adds the given [container] to this [DeploymentNode] and also adds all tags which are not part of [Container.getDefaultTags]
+ */
+fun DeploymentNode.addWithCustomTags(container: Container) {
+    this.add(container)
+    this.addTags(*container.tagsAsSet.subtract(container.defaultTags).toTypedArray())
+}
