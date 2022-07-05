@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.cloudflight.structurizr:structurizr-autoconfigure:1.0.0")
+    implementation("io.cloudflight.structurizr:structurizr-autoconfigure:1.0.1")
 }
 ````
 
