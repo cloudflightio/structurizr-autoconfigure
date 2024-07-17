@@ -1,5 +1,4 @@
 plugins {
-    id("io.cloudflight.autoconfigure-gradle") version "0.5.3"
     `maven-publish`
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     signing
@@ -7,11 +6,10 @@ plugins {
 
 description = "Spring Boot AutoConfigure Support for the Structurizr Client"
 group = "io.cloudflight.structurizr"
-version = "1.0.1"
 
 autoConfigure {
     java {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(17))
         vendorName.set("Cloudflight")
     }
 }

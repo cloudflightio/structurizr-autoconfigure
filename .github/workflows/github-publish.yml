@@ -1,27 +1,57 @@
-name: Publish package to the Maven Central Repository
+name: Publish to Maven Central
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: 'the stage of the version'
+        required: true
+        default: 'rc'
+        type: choice
+        options:
+          - rc
+          - final
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Java
-        uses: actions/setup-java@v2
+      - name: Clone repository
+        uses: actions/checkout@v3
         with:
-          java-version: '8'
+          fetch-depth: 0
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
           distribution: 'temurin'
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-      - name: Publish package
-        uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
+        uses: gradle/wrapper-validation-action@v1
+      - name : Retrieve module version from Reckon
+        run: echo "VERSION_NAME=$(${{github.workspace}}/gradlew -q clfPrintVersion -Preckon.stage=${{ inputs.stage }})" >> $GITHUB_OUTPUT
+        id: retrieve_version
+      - name: Publish module version to Github Step Summary
+        run: |
+          echo "# ${{steps.retrieve_version.outputs.VERSION_NAME}}" >> $GITHUB_STEP_SUMMARY
+      - name: Publish and Create Tag
+        uses: gradle/gradle-build-action@v2
         with:
-          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
+          arguments: check reckonTagPush publishToSonatype closeAndReleaseSonatypeStagingRepository -Preckon.stage=${{ inputs.stage }}
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          include_passed: true
+      - name: Create Release on GitHub
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{steps.retrieve_version.outputs.VERSION_NAME}}
+          tag_name: ${{steps.retrieve_version.outputs.VERSION_NAME}}
+          generate_release_notes: true
+          append_body: true
