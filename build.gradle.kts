@@ -2,6 +2,7 @@ plugins {
     `maven-publish`
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     signing
+    `java-library`
 }
 
 description = "Spring Boot AutoConfigure Support for the Structurizr Client"
@@ -19,22 +20,26 @@ repositories {
 }
 
 dependencies {
-    api(platform(libs.spring.boot.bom))
-    kapt(platform(libs.spring.boot.bom))
+    implementation(platform(libs.spring.boot.bom))
+    annotationProcessor(platform(libs.spring.boot.bom))
 
     api(libs.structurizr.core)
-    api(libs.structurizr.client)
-
-    api(libs.structurizr.export.c4plantuml)
-    api(libs.architectureicons)
+    api(libs.structurizr.export)
+    implementation(libs.structurizr.client)
 
     // let that be an API dependency in order publish @SpringBootApplication
     api("org.springframework.boot:spring-boot-autoconfigure")
     runtimeOnly("org.springframework.boot:spring-boot-starter")
 
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    testImplementation("org.springframework.boot:spring-boot-test")
+
+    testImplementation(platform(libs.junit.jupiter.bom))
+    testImplementation(libs.architectureicons)
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 java {
