@@ -1,0 +1,8 @@
+structurizr:
+  workspace:
+    name: "Coding Contest Platform"
+    description: ""
+  export:
+    c4-plant-uml:
+      enabled: true
+      output-directory: build/test/codingcontest/plantuml

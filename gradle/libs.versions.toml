@@ -1,15 +1,18 @@
 [versions]
 
-structurizr = "1.12.2"
-spring-boot = "2.7.1"
+structurizr = "2.2.0"
+spring-boot = "3.3.1"
+junit-jupiter = "5.10.3"
 
 
 [libraries]
 
 structurizr-core = { module = "com.structurizr:structurizr-core", version.ref = "structurizr" }
+structurizr-export = { module = "com.structurizr:structurizr-export", version.ref = "structurizr" }
 structurizr-client = { module = "com.structurizr:structurizr-client", version.ref = "structurizr" }
 
-structurizr-export-c4plantuml = { module = "io.cloudflight.structurizr:structurizr-export-c4plantuml", version = "1.0.0" }
 architectureicons = { module = "io.cloudflight.architectureicons:architectureicons", version = "0.3.0" }
 
 spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+
+junit-jupiter-bom = { module = "org.junit:junit-bom", version.ref = "junit-jupiter" }
