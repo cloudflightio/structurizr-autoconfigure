@@ -44,7 +44,7 @@ public class C4PlantUmlExportService implements WorkspaceExportService {
 
     private void storeDiagram(Diagram diagram) {
         File file = new File(properties.export().c4PlantUml().outputDirectory(), diagram.getKey() + ".puml");
-        LOG.info("Writing diagram ${diagram.key} to ${it.absolutePath}");
+        LOG.info("Writing diagram {} to {}", diagram.getKey(), file.getAbsolutePath());
         file.getParentFile().mkdirs();
         try {
             Files.writeString(file.toPath(), diagram.getDefinition());
